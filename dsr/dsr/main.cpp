@@ -70,7 +70,13 @@ void addTravel() {
 		// destination, shipName, captainName (the same way for all 3, just gotta figure out how)
 		cin.ignore();
 		cout << ""; // destination
-		// input the destination
+		cin.getline(newTravel.destination, 50); // input the destination
+
+  cout << "";
+  cin.getline(newTravel.shipName);
+
+  cout << "";
+  cin.getline(newTravel.captainName);
 
 		cout << ""; // first class price
 		cin >> newTravel.firstClassPrice;
