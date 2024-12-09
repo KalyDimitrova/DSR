@@ -30,7 +30,7 @@ void menu() {
 	setlocale(LC_ALL, "");
 
 	//TODO: fill all the choices
-	cout << "МАНЮ:\n"
+	cout << "МЕНЮ:\n"
 		<< "1. "
 		<< "2. "
 		<< "3. "
