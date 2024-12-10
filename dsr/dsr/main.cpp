@@ -75,26 +75,26 @@ void addTravel() {
 		cout << "\nВъведете име на капитан: ";
 		cin.getline(newTravel.captainName, 50);
 
-		cout << "\nВъведете цена за първа класа: "; // first class price
+		cout << "\nВъведете цена за първа класа: ";
 		cin >> newTravel.firstClassPrice;
 
-		cout << "\nВъведете цена за втора класа: "; // second class price
+		cout << "\nВъведете цена за втора класа: ";
 		cin >> newTravel.secondClassPrice;
 
-		cout << "\nВъведете брой пътници за първа класа: "; // first class passangers
+		cout << "\nВъведете брой пътници за първа класа: ";
 		cin >> newTravel.passangersFirstClass;
 
-		cout << "\nВъведете брой пътници за втора класа: "; // second class passangers
+		cout << "\nВъведете брой пътници за втора класа: ";
 		cin >> newTravel.passangersSecondClass;
 
-		cout << "\nВъведете ден на тръгване: "; // start dya
+		cout << "\nВъведете ден на тръгване: ";
 		cin >> newTravel.startDay;
 
-		cout << "\nВъведете ден на връщане: "; // end day
+		cout << "\nВъведете ден на връщане: ";
 		cin >> newTravel.endDay;
 
 		if (newTravel.startDay > newTravel.endDay) {
-			cout << "\nДенят на тръгване не може да бъде след деня на връщане!" << endl; // error message
+			cout << "\nДенят на тръгване не може да бъде след деня на връщане!" << endl;
 		}
 	}
 
