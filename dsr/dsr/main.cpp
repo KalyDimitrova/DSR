@@ -31,14 +31,14 @@ void menu() {
 
 	//TODO: fill all the choices
 	cout << "МЕНЮ:\n"
-		<< "1. Добавяне на пътуване"
-		<< "2. Извеждане на всички записани пътувания"
-		<< "3. Търсене на пътувания за определен интервал от време"
-		<< "4. Търсене на пътувания до определена дестинация"
-		<< "5. Сортиране на пътуванията по дестинация"
-		<< "6. Записване на данните във външен файл"
-		<< "7. Четене на данни от външен файл"
-		<< "0. ";
+		<< "1. Добавяне на пътуване\n"
+		<< "2. Извеждане на всички записани пътувания\n"
+		<< "3. Търсене на пътувания за определен интервал от време\n"
+		<< "4. Търсене на пътувания до определена дестинация\n"
+		<< "5. Сортиране на пътуванията по дестинация\n"
+		<< "6. Записване на данните във външен файл\n"
+		<< "7. Четене на данни от външен файл\n"
+		<< "0. Изход от програмата\n";
 }
 
 void addTravel() {
@@ -104,11 +104,21 @@ void addTravel() {
 void printAllTravels() {
 	// must output all travles in a table !!!
 }
-void searchTravelSpecificPeriod();
-void searchDestinationTravel();
-void sortTravelsByDestination();
-void giveInfoToExternalFile();
-void getInfroFromExternalFile();
+void searchTravelSpecificPeriod(){
+	// neshto si tam
+}
+void searchDestinationTravel() {
+	// neshto pak
+}
+void sortTravelsByDestination() {
+	// neshto
+}
+void giveInfoToExternalFile() {
+	// neshto
+}
+void getInfroFromExternalFile() {
+	// neshto
+}
 
 int main() {
 	int choice;
