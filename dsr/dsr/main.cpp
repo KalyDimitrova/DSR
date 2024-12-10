@@ -6,7 +6,7 @@
 using namespace std;
 
 //TODO: fill the struct
-struct travels {
+struct Travel {
 	int number;
 	char destination[50];
 	char shipName[50];
@@ -24,20 +24,20 @@ struct travels {
 const int MAX_TRAVELS = 100;
 int travelCount = 0;
 int currentDay = 1;
-travels travel[MAX_TRAVELS];
+Travel travel[MAX_TRAVELS];
 
 void menu() {
 	setlocale(LC_ALL, "");
 
 	//TODO: fill all the choices
-	cout << "МАНЮ:\n"
-		<< "1. "
-		<< "2. "
-		<< "3. "
-		<< "4. "
-		<< "5. "
-		<< "6. "
-		<< "7. "
+	cout << "МЕНЮ:\n"
+		<< "1. Добавяне на пътуване"
+		<< "2. Извеждане на всички записани пътувания"
+		<< "3. Търсене на пътувания за определен интервал от време"
+		<< "4. Търсене на пътувания до определена дестинация"
+		<< "5. Сортиране на пътуванията по дестинация"
+		<< "6. Записване на данните във външен файл"
+		<< "7. Четене на данни от външен файл"
 		<< "0. ";
 }
 
@@ -45,53 +45,56 @@ void addTravel() {
 
 	// must create functions to check if the captain/ship is already booked !!!
 
-	if (travelCount >= MAX_TRAVELS) {
-		// write the massage that the max travel count is reached
-		cout << "";
+	if (travelCount == MAX_TRAVELS) {
+		cout << "Максималният брой на пътувания е достигнат!\n";
 	}
 
-	// message: input travels count to add
-	cout << "";
+	cout << "Въведете брой на пътувания, които искате да добавите: ";
 	int n;
 	cin >> n;
 
 	if (travelCount + n > MAX_TRAVELS) {
-		// message: there could not be more travels
-		cout << "";
+		cout << "Максималният брой на пътувания е достигнат!\n"
+			<< "Въведете валиден брой пътувания!";
 	}
 
 	for (int i = 0; i < n; i++) {
-		travels newTravel = {};
+		Travel newTravel = {};
 
-		cout << ""; // travel i + 1 
-		cout << ""; // number of travel
+		cout << "Пътуване " << i + 1;
+		cout << "Въведете номер на пътуването: ";
 		cin >> newTravel.number;
 
-		// destination, shipName, captainName (the same way for all 3, just gotta figure out how)
 		cin.ignore();
-		cout << ""; // destination
-		// input the destination
+		cout << "\nВъведете дестинация: ";
+		cin.getline(newTravel.destination, 50);
 
-		cout << ""; // first class price
+		cout << "\nВъведете име на кораб: ";
+		cin.getline(newTravel.shipName, 50);
+
+		cout << "\nВъведете име на капитан: ";
+		cin.getline(newTravel.captainName, 50);
+
+		cout << "\nВъведете цена за първа класа: "; // first class price
 		cin >> newTravel.firstClassPrice;
 
-		cout << ""; // second class price
+		cout << "\nВъведете цена за втора класа: "; // second class price
 		cin >> newTravel.secondClassPrice;
 
-		cout << ""; // first class passangers
+		cout << "\nВъведете брой пътници за първа класа: "; // first class passangers
 		cin >> newTravel.passangersFirstClass;
 
-		cout << ""; // second class passangers
+		cout << "\nВъведете брой пътници за втора класа: "; // second class passangers
 		cin >> newTravel.passangersSecondClass;
 
-		cout << ""; // start dya
+		cout << "\nВъведете ден на тръгване: "; // start dya
 		cin >> newTravel.startDay;
 
-		cout << ""; // end day
+		cout << "\nВъведете ден на връщане: "; // end day
 		cin >> newTravel.endDay;
 
 		if (newTravel.startDay > newTravel.endDay) {
-			cout << ""; // error message
+			cout << "\nДенят на тръгване не може да бъде след деня на връщане!" << endl; // error message
 		}
 	}
 
@@ -137,7 +140,8 @@ int main() {
 				getInfroFromExternalFile();
 				break;
 			case 0:
-				cout << "Данните са записани успешно!\n";
+				cout << "Данните са записани успешно!\n"
+				<< "Довиждане!";
 				break;
 			default:
 				cout << "Невалиден избор! Моля изберете отново: ";
