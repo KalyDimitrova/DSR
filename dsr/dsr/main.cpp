@@ -5,26 +5,24 @@
 
 using namespace std;
 
-//TODO: fill the struct
 struct Travel {
 	int number;
-	char destination[50];
-	char shipName[50];
-	char captainName[50];
+	string destination;
+	string shipName;
+	string captainName;
 	double firstClassPrice;
 	double secondClassPrice;
 	int passangersFirstClass;
 	int passangersSecondClass;
 	int startDay;
 	int endDay;
-	char status[50];
 };
 
-//TODO: create all global variables needed
 const int MAX_TRAVELS = 100;
 int travelCount = 0;
 int currentDay = 1;
-Travel travel[MAX_TRAVELS];
+Travel travels[MAX_TRAVELS];
+// vector<Travel> travels;
 
 void menu() {
 	setlocale(LC_ALL, "");
@@ -41,81 +39,146 @@ void menu() {
 		<< "0. Изход от програмата\n";
 }
 
-void addTravel() {
+int addTravel() {
 
 	// must create functions to check if the captain/ship is already booked !!!
 
 	if (travelCount == MAX_TRAVELS) {
 		cout << "Максималният брой на пътувания е достигнат!\n";
+		return 0;
 	}
 
-	cout << "Въведете брой на пътувания, които искате да добавите: ";
 	int n;
-	cin >> n;
+	do {
+		cout << "Въведете брой на пътувания, които искате да добавите: ";
+		cin >> n;
 
-	if (travelCount + n > MAX_TRAVELS) {
-		cout << "Максималният брой на пътувания е достигнат!\n"
-			<< "Въведете валиден брой пътувания!";
-	}
+		if (travelCount + n > MAX_TRAVELS) {
+			cout << "Максималният брой на пътувания е достигнат!\n"
+				<< "Въведете валиден брой пътувания!\n";
+		}
+
+	} while (travelCount + n > MAX_TRAVELS);
+
 
 	for (int i = 0; i < n; i++) {
 		Travel newTravel = {};
 
-		cout << "Пътуване " << i + 1;
+		cout << "Пътуване: " << i + 1 << endl;
 		cout << "Въведете номер на пътуването: ";
 		cin >> newTravel.number;
 
 		cin.ignore();
-		cout << "\nВъведете дестинация: ";
-		cin.getline(newTravel.destination, 50);
+		cout << "Въведете дестинация: ";
+		cin >> newTravel.destination;
 
-		cout << "\nВъведете име на кораб: ";
-		cin.getline(newTravel.shipName, 50);
+		cout << "Въведете име на кораб: ";
+		cin >> newTravel.shipName;
 
-		cout << "\nВъведете име на капитан: ";
-		cin.getline(newTravel.captainName, 50);
+		cout << "Въведете име на капитан: ";
+		cin >> newTravel.captainName;
 
-		cout << "\nВъведете цена за първа класа: ";
+		cin.ignore();
+		cout << "Въведете цена за първа класа: ";
 		cin >> newTravel.firstClassPrice;
 
-		cout << "\nВъведете цена за втора класа: ";
+		cout << "Въведете цена за втора класа: ";
 		cin >> newTravel.secondClassPrice;
 
-		cout << "\nВъведете брой пътници за първа класа: ";
+		cout << "Въведете брой пътници за първа класа: ";
 		cin >> newTravel.passangersFirstClass;
 
-		cout << "\nВъведете брой пътници за втора класа: ";
+		cout << "Въведете брой пътници за втора класа: ";
 		cin >> newTravel.passangersSecondClass;
 
-		cout << "\nВъведете ден на тръгване: ";
-		cin >> newTravel.startDay;
+		do {
+			cout << "Въведете ден на тръгване: ";
+			cin >> newTravel.startDay;
 
-		cout << "\nВъведете ден на връщане: ";
-		cin >> newTravel.endDay;
+			cout << "Въведете ден на връщане: ";
+			cin >> newTravel.endDay;
 
-		if (newTravel.startDay > newTravel.endDay) {
-			cout << "\nДенят на тръгване не може да бъде след деня на връщане!" << endl;
+			if (newTravel.startDay > newTravel.endDay) {
+				cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
+					<< "Въведете валидни данни:\n";
+			}
+		} while (newTravel.startDay > newTravel.endDay);	
+
+		travels[travelCount] = newTravel;
+		travelCount++;
+		return 0;
+	}
+}
+
+// do the table !!!
+void printAllTravels() {
+	// must output all travles in a table !!!
+
+	if (travelCount == 0) {
+		cout << "Няма въведени пътувания.";
+	}
+}
+
+void searchTravelSpecificPeriod(){
+	// neshto si tam
+	int minDay, maxDay;
+	cout << "Въведете начален ден: ";
+	cin >> minDay;
+	cout << "Въведете краен ден: ";
+	cin >> maxDay;
+
+	bool isFound = false;
+	for (int i = 0; i < travelCount; i++) {
+		if (travels[i].startDay >= minDay && travels[i].endDay <= maxDay) {
+			isFound = true;
+
+			cout << "Намерени пътувания:\n"
+				<< "Пътуване " << travels[i].number 
+				<< " до " << travels[i].destination
+				<< " на " << travels[i].startDay << " ден." << endl;
 		}
 	}
 
+	if (!isFound) {
+		cout << "Няма намерени пътувания за този период.\n";
+	}
+}
+
+void searchDestinationTravel() {
+	char destinationInput[50];
+	cin.ignore();
+	
+	cout << "Въведете дестинация: ";
+	cin.getline(destinationInput, sizeof(destinationInput));
+
+	bool isFound = false;
+	for (int i = 0; i < travelCount; i++) {
+		// using strcmp (string compare) to see if the input destination has a match
+		if (travels[i].destination == destinationInput) {
+			isFound = true;
+
+			cout << "Намерени пътувания:\n"
+				<< "Пътуване " << travels[i].number
+				<< " до " << travels[i].destination
+				<< " на " << travels[i].startDay << " ден." << endl;
+		}
+	}
+
+
+	if (!isFound) {
+		cout << "Няма намерени пътувания до тази дестинация.\n";
+	}
 }
 
 //TODO: fill all these functions accordingly
-void printAllTravels() {
-	// must output all travles in a table !!!
-}
-void searchTravelSpecificPeriod(){
-	// neshto si tam
-}
-void searchDestinationTravel() {
-	// neshto pak
-}
 void sortTravelsByDestination() {
 	// neshto
 }
+
 void giveInfoToExternalFile() {
 	// neshto
 }
+
 void getInfroFromExternalFile() {
 	// neshto
 }
@@ -151,10 +214,10 @@ int main() {
 				break;
 			case 0:
 				cout << "Данните са записани успешно!\n"
-				<< "Довиждане!";
+				<< "Довиждане!" << endl;
 				break;
 			default:
-				cout << "Невалиден избор! Моля изберете отново: ";
+				cout << "Невалиден избор! Моля изберете отново: \n";
 				break;
 		}
 	} while (choice != 0);
