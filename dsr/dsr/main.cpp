@@ -22,7 +22,6 @@ const int MAX_TRAVELS = 100;
 int travelCount = 0;
 int currentDay = 1;
 Travel travels[MAX_TRAVELS];
-// vector<Travel> travels;
 
 void menu() {
 	setlocale(LC_ALL, "");
@@ -39,10 +38,8 @@ void menu() {
 		<< "0. Изход от програмата\n";
 }
 
+// must create functions to check if the captain/ship is already booked !!!
 int addTravel() {
-
-	// must create functions to check if the captain/ship is already booked !!!
-
 	if (travelCount == MAX_TRAVELS) {
 		cout << "Максималният брой на пътувания е достигнат!\n";
 		return 0;
@@ -112,15 +109,12 @@ int addTravel() {
 
 // do the table !!!
 void printAllTravels() {
-	// must output all travles in a table !!!
-
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания.";
 	}
 }
 
 void searchTravelSpecificPeriod(){
-	// neshto si tam
 	int minDay, maxDay;
 	cout << "Въведете начален ден: ";
 	cin >> minDay;
@@ -153,7 +147,6 @@ void searchDestinationTravel() {
 
 	bool isFound = false;
 	for (int i = 0; i < travelCount; i++) {
-		// using strcmp (string compare) to see if the input destination has a match
 		if (travels[i].destination == destinationInput) {
 			isFound = true;
 
