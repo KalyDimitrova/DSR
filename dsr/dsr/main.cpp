@@ -26,7 +26,6 @@ Travel travels[MAX_TRAVELS];
 void menu() {
 	setlocale(LC_ALL, "");
 
-	//TODO: fill all the choices
 	cout << "МЕНЮ:\n"
 		<< "1. Добавяне на пътуване\n"
 		<< "2. Извеждане на всички записани пътувания\n"
@@ -165,7 +164,16 @@ void searchDestinationTravel() {
 
 //TODO: fill all these functions accordingly
 void sortTravelsByDestination() {
-	// neshto
+	for (int i = 0; i < travelCount - 1; i++) {
+		for (int j = 0; j < travelCount - i - 1; j++) {
+			if (travels[j].destination > travels[j + 1].destination) {
+				Travel temp = travels[j];
+				travels[j] = travels[j + 1];
+				travels[j + 1] = temp;
+			}
+		}
+	}
+	cout << "Пътуванията са сортирани по дестинация.\n";
 }
 
 void giveInfoToExternalFile() {
