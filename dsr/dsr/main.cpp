@@ -26,15 +26,15 @@ Travel travels[MAX_TRAVELS];
 void menu() {
 	setlocale(LC_ALL, "");
 
-	cout << "МЕНЮ:\n"
+	cout << "\t\t\tМЕНЮ:\n"
+		<< "0. Изход от програмата\n"
 		<< "1. Добавяне на пътуване\n"
 		<< "2. Извеждане на всички записани пътувания\n"
 		<< "3. Търсене на пътувания за определен интервал от време\n"
 		<< "4. Търсене на пътувания до определена дестинация\n"
 		<< "5. Сортиране на пътуванията по дестинация\n"
 		<< "6. Записване на данните във външен файл\n"
-		<< "7. Четене на данни от външен файл\n"
-		<< "0. Изход от програмата\n";
+		<< "7. Четене на данни от външен файл\n";
 }
 
 // must create functions to check if the captain/ship is already booked !!!
@@ -64,7 +64,6 @@ int addTravel() {
 		cout << "Въведете номер на пътуването: ";
 		cin >> newTravel.number;
 
-		cin.ignore();
 		cout << "Въведете дестинация: ";
 		cin >> newTravel.destination;
 
@@ -74,7 +73,6 @@ int addTravel() {
 		cout << "Въведете име на капитан: ";
 		cin >> newTravel.captainName;
 
-		cin.ignore();
 		cout << "Въведете цена за първа класа: ";
 		cin >> newTravel.firstClassPrice;
 
@@ -102,8 +100,8 @@ int addTravel() {
 
 		travels[travelCount] = newTravel;
 		travelCount++;
-		return 0;
 	}
+	return 0;
 }
 
 // do the table !!!
