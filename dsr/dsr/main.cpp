@@ -20,7 +20,7 @@ struct Travel {
 
 const int MAX_TRAVELS = 100;
 int travelCount = 0;
-int currentDay = 1;
+int currentDay;
 Travel travels[MAX_TRAVELS];
 
 void menu() {
@@ -179,10 +179,26 @@ void giveInfoToExternalFile() {
 }
 
 void getInfroFromExternalFile() {
-	// neshto
+	fstream fileInput("travels.txt", ios::in);
+
+	// think how to input all the data
+	/*  Пътуване 1:
+		Номер на пътуване : 634263
+		Дестинация : Варна
+		Име на кораб : Черната Перла
+		Име на капитан : Джак Спароу
+		Цена за първа класа : 120
+		Цена за втора класа : 80
+		Брой пътници в първа класа : 20
+		Брой пътници във втора класа : 130
+		Ден на тръгване : 13
+		Ден на връщане : 25  */
 }
 
 int main() {
+	cout << "Въведете текущ ден от месеца (1-31): ";
+	cin >> currentDay;
+
 	int choice;
 
 	do {
@@ -207,13 +223,13 @@ int main() {
 				break;
 			case 6:
 				giveInfoToExternalFile();
+				cout << "Данните са записани успешно!\n";
 				break;
 			case 7:
 				getInfroFromExternalFile();
 				break;
 			case 0:
-				cout << "Данните са записани успешно!\n"
-				<< "Довиждане!" << endl;
+				cout << "Довиждане!" << endl;
 				break;
 			default:
 				cout << "Невалиден избор! Моля изберете отново: \n";
