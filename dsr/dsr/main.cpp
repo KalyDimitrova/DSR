@@ -195,9 +195,15 @@ void getInfroFromExternalFile() {
 		Ден на връщане : 25  */
 }
 
+void travelStatus() {
+	// neshto
+}
+
 int main() {
 	cout << "Въведете текущ ден от месеца (1-31): ";
 	cin >> currentDay;
+
+	travelStatus();
 
 	int choice;
 
