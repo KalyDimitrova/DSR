@@ -41,6 +41,15 @@ void menu() {
 		<< "10. Промяна на пътуване\n";
 }
 
+bool isNumberUnique(int number) {
+	for (int i = 0; i < travelCount; i++) {
+		if (travels[i].number == number) {
+			return false;
+		}
+	}
+	return true;
+}
+
 bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
 	for (int i = 0; i < travelCount; i++) {
 		if (i == currentTravelIndex) continue;
@@ -77,8 +86,15 @@ int addTravel() {
 		Travel newTravel = {};
 
 		cout << "Пътуване: " << i + 1 << endl;
-		cout << "Въведете номер на пътуването: ";
-		cin >> newTravel.number;
+
+		do {
+			cout << "Въведете номер на пътуването: ";
+			cin >> newTravel.number;
+
+			if (!isNumberUnique(newTravel.number)) {
+				cout << "Този номер вече съществува. Моля въведете уникален номер.\n";
+			}
+		} while (!isNumberUnique(newTravel.number));
 
 		cout << "Въведете дестинация: ";
 		cin >> newTravel.destination;
@@ -228,6 +244,7 @@ void sortTravelsByDestination() {
 			}
 		}
 	}
+	cout << "Пътуванията са сортитани по дестинация!" << endl;
 }
 
 //TODO: fill the functions for the files
@@ -573,11 +590,11 @@ int main() {
 		
 		switch (choice){
 			case 0:
+				giveInfoToExternalFile();
 				cout << "Довиждане!" << endl;
 				break;
 			case 1:
 				addTravel();
-				cout << "Пътуването е добавено успешно!" << endl;
 				break;
 			case 2:
 				printAllTravels();
@@ -590,7 +607,6 @@ int main() {
 				break;
 			case 5:
 				sortTravelsByDestination();
-				cout << "Пътуванията са сортитани по дестинация!" << endl;
 				break;
 			case 6:
 				giveInfoToExternalFile();
