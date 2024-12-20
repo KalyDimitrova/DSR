@@ -181,7 +181,6 @@ void giveInfoToExternalFile() {
 void getInfroFromExternalFile() {
 	fstream fileInput("travels.txt", ios::in);
 
-	// think how to input all the data
 	/*  Пътуване 1:
 		Номер на пътуване : 634263
 		Дестинация : Варна
@@ -196,7 +195,40 @@ void getInfroFromExternalFile() {
 }
 
 void travelStatus() {
-	// neshto
+	if (travelCount == 0) {
+		cout << "Няма въведени пътувания за проверка." << endl;
+		return;
+	}
+
+	cout << "\nСтатус на пътуванията за ден " << currentDay << ":\n\n";
+
+	for (int i = 0; i < travelCount; i++) {
+		cout << "Пътуване " << travels[i].number << " до " << travels[i].destination << ": ";
+
+		if (currentDay < travels[i].startDay) {
+			cout << "В очакване\n";
+
+			if (travels[i].startDay - currentDay <= 3) {
+				cout << "ВНИМАНИЕ: Остават " << travels[i].startDay - currentDay
+					<< " дни за промени в пътуването!\n";
+			}
+			else {
+				cout << "Възможни са промени на капитан, брой пасажери, дати и цени.\n";
+			}
+		}
+		else if (currentDay > travels[i].endDay) {
+			cout << "Отминало - не могат да се извършват промени\n";
+		}
+		else {
+			cout << "В процес на изпълнение - не могат да се извършват промени\n";
+		}
+
+		cout << "Кораб: " << travels[i].shipName << endl
+			<< "Капитан: " << travels[i].captainName << endl
+			<< "Дати: " << travels[i].startDay << "-" << travels[i].endDay << endl
+			<< "Пътници: " << travels[i].passangersFirstClass + travels[i].passangersSecondClass << endl;
+		cout << "----------------------------------------\n";
+	}
 }
 
 int main() {
@@ -204,6 +236,7 @@ int main() {
 	cin >> currentDay;
 
 	travelStatus();
+	getInfroFromExternalFile();
 
 	int choice;
 
