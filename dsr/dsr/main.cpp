@@ -228,7 +228,6 @@ void sortTravelsByDestination() {
 			}
 		}
 	}
-	cout << "Пътуванията са сортирани по дестинация.\n";
 }
 
 //TODO: fill all these functions accordingly
@@ -578,6 +577,7 @@ int main() {
 				break;
 			case 1:
 				addTravel();
+				cout << "Пътуването е добавено успешно!" << endl;
 				break;
 			case 2:
 				printAllTravels();
@@ -590,6 +590,7 @@ int main() {
 				break;
 			case 5:
 				sortTravelsByDestination();
+				cout << "Пътуванията са сортитани по дестинация!" << endl;
 				break;
 			case 6:
 				giveInfoToExternalFile();
