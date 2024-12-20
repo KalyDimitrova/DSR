@@ -98,14 +98,14 @@ int addTravel() {
 
 			if (newTravel.startDay > newTravel.endDay) {
 				cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
-					<< "Въведете валидни данни:\n";
+					<< "Въведете валидни данни.\n";
 				continue;
 			}
 
 			if (!isShipCaptainAvailable(newTravel.shipName, newTravel.captainName,
 				newTravel.startDay, newTravel.endDay)) {
 				cout << "Корабът или капитанът са заети в този период!\n"
-					<< "Моля въведете други данни.\n";
+					<< "Въведете други данни.\n";
 				continue;
 			}
 
@@ -141,11 +141,31 @@ int addTravel() {
 	return 0;
 }
 
-// do the table !!!
 void printAllTravels() {
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания.";
+		return;
 	}
+
+	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
+	cout << setw(8) << "Номер" << " | "
+		<< setw(12) << "Дестинация" << " | "
+		<< setw(12) << "Кораб" << " | "
+		<< setw(12) << "Капитан" << " | "
+		<< setw(10) << "Статус" << " | "
+		<< setw(12) << "Дати" << endl;
+	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
+
+	for (int i = 0; i < travelCount; i++) {
+		cout << setw(8) << travels[i].number << " | "
+			<< setw(12) << travels[i].destination << " | "
+			<< setw(12) << travels[i].shipName << " | "
+			<< setw(12) << travels[i].captainName << " | "
+			<< setw(10) << travels[i].status << " | "
+			<< setw(2) << travels[i].startDay << "-"
+			<< setw(2) << travels[i].endDay << endl;
+	}
+	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
 }
 
 void searchTravelSpecificPeriod(){
