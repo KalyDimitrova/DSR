@@ -272,6 +272,93 @@ void travelStatus() {
 	}
 }
 
+void showFinishedTravelsByDestination() {
+	string searchDestination;
+	cout << "Въведете дестинация: ";
+	cin >> searchDestination;
+
+	Travel finishedTravels[MAX_TRAVELS];
+	int finishedTravelCount = 0;
+
+	for (int i = 0; i < travelCount; i++) {
+		if (travels[i].destination == searchDestination &&
+			travels[i].status == "Отминало") {
+			finishedTravels[finishedTravelCount++] = travels[i];
+		}
+	}
+
+	if (finishedTravelCount == 0) {
+		cout << "Няма завършили пътувания до " << searchDestination << endl;
+		return;
+	}
+
+	for (int i = 0; i < finishedTravelCount - 1; i++) {
+		for (int j = 0; j < finishedTravelCount - i - 1; j++) {
+			if (finishedTravels[j].startDay > finishedTravels[j + 1].startDay) {
+				Travel temp = finishedTravels[j];
+				finishedTravels[j] = finishedTravels[j + 1];
+				finishedTravels[j + 1] = temp;
+			}
+		}
+	}
+
+	cout << "\nЗавършили пътувания до " << searchDestination << ":\n";
+	for (int i = 0; i < finishedTravelCount; i++) {
+		cout << "Пътуване " << finishedTravels[i].number
+			<< " - от ден " << finishedTravels[i].startDay
+			<< " до ден " << finishedTravels[i].endDay
+			<< " с капитан " << finishedTravels[i].captainName << endl;
+	}
+}
+
+void showCaptainTravelsByPeriod() {
+	string captainName;
+	int startDay, endDay;
+
+	cout << "Въведете име на капитан: ";
+	cin >> captainName;
+	cout << "Въведете начален ден: ";
+	cin >> startDay;
+	cout << "Въведете краен ден: ";
+	cin >> endDay;
+
+	Travel captainTravels[MAX_TRAVELS];
+	int captainTravelCount = 0;
+
+	for (int i = 0; i < travelCount; i++) {
+		if (travels[i].captainName == captainName &&
+			travels[i].startDay >= startDay &&
+			travels[i].endDay <= endDay) {
+			captainTravels[captainTravelCount++] = travels[i];
+		}
+	}
+
+	if (captainTravelCount == 0) {
+		cout << "Няма намерени пътувания за капитан " << captainName
+			<< " в периода " << startDay << "-" << endDay << endl;
+		return;
+	}
+
+	for (int i = 0; i < captainTravelCount - 1; i++) {
+		for (int j = 0; j < captainTravelCount - i - 1; j++) {
+			if (captainTravels[j].destination < captainTravels[j + 1].destination) {
+				Travel temp = captainTravels[j];
+				captainTravels[j] = captainTravels[j + 1];
+				captainTravels[j + 1] = temp;
+			}
+		}
+	}
+
+	cout << "\nПътувания на капитан " << captainName
+		<< " в периода " << startDay << "-" << endDay << ":\n";
+	for (int i = 0; i < captainTravelCount; i++) {
+		cout << "Пътуване " << captainTravels[i].number
+			<< " до " << captainTravels[i].destination
+			<< " - от ден " << captainTravels[i].startDay
+			<< " до ден " << captainTravels[i].endDay << endl;
+	}
+}
+
 void modifyTravel() {
 	int travelNumber;
 	cout << "Въведете номер на пътуването за промяна: ";
@@ -512,10 +599,10 @@ int main() {
 				getInfroFromExternalFile();
 				break;
 			case 8:
-				// showFinishedTravelsByDestination();
+				showFinishedTravelsByDestination();
 				break;
 			case 9:
-				// showCaptainTravelsByPeriod();
+				showCaptainTravelsByPeriod();
 				break;
 			case 10:
 				modifyTravel();
