@@ -230,7 +230,7 @@ void sortTravelsByDestination() {
 	}
 }
 
-//TODO: fill all these functions accordingly
+//TODO: fill the functions for the files
 void giveInfoToExternalFile() {
 	// neshto
 }
