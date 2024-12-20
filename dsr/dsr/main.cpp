@@ -10,12 +10,13 @@ struct Travel {
 	string destination;
 	string shipName;
 	string captainName;
+	int startDay;
+	int endDay;
 	double firstClassPrice;
 	double secondClassPrice;
 	int passangersFirstClass;
 	int passangersSecondClass;
-	int startDay;
-	int endDay;
+	
 	string status;
 };
 
@@ -81,11 +82,36 @@ int addTravel() {
 		cout << "Въведете дестинация: ";
 		cin >> newTravel.destination;
 
-		cout << "Въведете име на кораб: ";
-		cin >> newTravel.shipName;
+		bool validTravelData = false;
+		do {
+			cout << "Въведете име на кораб: ";
+			cin >> newTravel.shipName;
 
-		cout << "Въведете име на капитан: ";
-		cin >> newTravel.captainName;
+			cout << "Въведете име на капитан: ";
+			cin >> newTravel.captainName;
+
+			cout << "Въведете ден на тръгване: ";
+			cin >> newTravel.startDay;
+
+			cout << "Въведете ден на връщане: ";
+			cin >> newTravel.endDay;
+
+			if (newTravel.startDay > newTravel.endDay) {
+				cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
+					<< "Въведете валидни данни:\n";
+				continue;
+			}
+
+			if (!isShipCaptainAvailable(newTravel.shipName, newTravel.captainName,
+				newTravel.startDay, newTravel.endDay)) {
+				cout << "Корабът или капитанът са заети в този период!\n"
+					<< "Моля въведете други данни.\n";
+				continue;
+			}
+
+			validTravelData = true;
+
+		} while (!validTravelData);
 
 		cout << "Въведете цена за първа класа: ";
 		cin >> newTravel.firstClassPrice;
@@ -98,19 +124,6 @@ int addTravel() {
 
 		cout << "Въведете брой пътници за втора класа: ";
 		cin >> newTravel.passangersSecondClass;
-
-		do {
-			cout << "Въведете ден на тръгване: ";
-			cin >> newTravel.startDay;
-
-			cout << "Въведете ден на връщане: ";
-			cin >> newTravel.endDay;
-
-			if (newTravel.startDay > newTravel.endDay) {
-				cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
-					<< "Въведете валидни данни:\n";
-			}
-		} while (newTravel.startDay > newTravel.endDay);
 
 		if (currentDay < newTravel.startDay) {
 			newTravel.status = "В очакване";
