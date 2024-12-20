@@ -6,17 +6,16 @@
 using namespace std;
 
 struct Travel {
-	int number;
+	int number = 0;
 	string destination;
 	string shipName;
 	string captainName;
-	int startDay;
-	int endDay;
-	double firstClassPrice;
-	double secondClassPrice;
-	int passangersFirstClass;
-	int passangersSecondClass;
-	
+	int startDay = 0;
+	int endDay = 0;
+	double firstClassPrice = 0.0;
+	double secondClassPrice = 0.0;
+	int passangersFirstClass = 0;
+	int passangersSecondClass = 0;
 	string status;
 };
 
@@ -36,10 +35,12 @@ void menu() {
 		<< "4. Търсене на пътувания до определена дестинация\n"
 		<< "5. Сортиране на пътуванията по дестинация\n"
 		<< "6. Записване на данните във външен файл\n"
-		<< "7. Четене на данни от външен файл\n";
+		<< "7. Четене на данни от външен файл\n"
+		<< "8. Завършили пътувания до дестинация\n"
+		<< "9. Пътувания на капитан за период\n"
+		<< "10. Промяна на пътуване\n";
 }
 
-// must create functions to check if the captain/ship is already booked !!!
 bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
 	for (int i = 0; i < travelCount; i++) {
 		if (i == currentTravelIndex) continue;
@@ -217,7 +218,6 @@ void searchDestinationTravel() {
 	}
 }
 
-//TODO: fill all these functions accordingly
 void sortTravelsByDestination() {
 	for (int i = 0; i < travelCount - 1; i++) {
 		for (int j = 0; j < travelCount - i - 1; j++) {
@@ -231,6 +231,7 @@ void sortTravelsByDestination() {
 	cout << "Пътуванията са сортирани по дестинация.\n";
 }
 
+//TODO: fill all these functions accordingly
 void giveInfoToExternalFile() {
 	// neshto
 }
@@ -252,24 +253,160 @@ void getInfroFromExternalFile() {
 		Ден на връщане : 25  */
 }
 
-void travelStatus() {
-	void travelStatus() {
-		if (travelCount == 0) {
-			cout << "Няма въведени пътувания за проверка." << endl;
-			return;
-		}
 
-		for (int i = 0; i < travelCount; i++) {
-			if (currentDay < travels[i].startDay) {
-				travels[i].status = "В очакване";
-			}
-			else if (currentDay > travels[i].endDay) {
-				travels[i].status = "Отминало";
-			}
-			else {
-				travels[i].status = "В процес на изпълнение";
-			}
+void travelStatus() {
+	if (travelCount == 0) {
+		cout << "Няма въведени пътувания за проверка." << endl;
+		return;
+	}
+
+	for (int i = 0; i < travelCount; i++) {
+		if (currentDay < travels[i].startDay) {
+			travels[i].status = "В очакване";
 		}
+		else if (currentDay > travels[i].endDay) {
+			travels[i].status = "Отминало";
+		}
+		else {
+			travels[i].status = "В процес на изпълнение";
+		}
+	}
+}
+
+void modifyTravel() {
+	int travelNumber;
+	cout << "Въведете номер на пътуването за промяна: ";
+	cin >> travelNumber;
+
+	// Намиране на пътуването
+	int travelIndex = -1;
+	for (int i = 0; i < travelCount; i++) {
+		if (travels[i].number == travelNumber) {
+			travelIndex = i;
+			break;
+		}
+	}
+
+	// Проверка дали пътуването съществува
+	if (travelIndex == -1) {
+		cout << "Пътуване с този номер не е намерено.\n";
+		return;
+	}
+
+	// Проверка на статуса
+	if (travels[travelIndex].status != "В очакване") {
+		cout << "Пътуването не може да бъде променено - "
+			<< (travels[travelIndex].status == "Отминало" ? "вече е отминало" : "е в процес на изпълнение")
+			<< endl;
+		return;
+	}
+
+	// Проверка за 3-дневния срок
+	if (travels[travelIndex].startDay - currentDay <= 3) {
+		cout << "Пътуването не може да бъде променено - остават по-малко от 3 дни до началото.\n";
+		return;
+	}
+
+	cout << "\nИзберете какво искате да промените:\n"
+		<< "1. Капитан\n"
+		<< "2. Брой пътници първа класа\n"
+		<< "3. Брой пътници втора класа\n"
+		<< "4. Начална дата\n"
+		<< "5. Крайна дата\n"
+		<< "6. Цена първа класа\n"
+		<< "7. Цена втора класа\n"
+		<< "0. Отказ\n";
+
+	int choice;
+	cout << "Вашият избор: ";
+	cin >> choice;
+
+	string confirm;
+	cout << "Сигурни ли сте, че искате да направите промяната? (да/не): ";
+	cin >> confirm;
+	if (confirm != "да") {
+		cout << "Промяната е отказана.\n";
+		return;
+	}
+
+	switch (choice) {
+	case 1: {
+		string newCaptain;
+		cout << "Въведете нов капитан: ";
+		cin >> newCaptain;
+
+		if (isShipCaptainAvailable(travels[travelIndex].shipName, newCaptain,
+			travels[travelIndex].startDay, travels[travelIndex].endDay,
+			travelIndex)) {
+			travels[travelIndex].captainName = newCaptain;
+			cout << "Капитанът е променен успешно.\n";
+		}
+		else {
+			cout << "Капитанът е зает в този период.\n";
+		}
+		break;
+	}
+	case 2: {
+		cout << "Въведете нов брой пътници първа класа: ";
+		cin >> travels[travelIndex].passangersFirstClass;
+		cout << "Броят пътници е променен успешно.\n";
+		break;
+	}
+	case 3: {
+		cout << "Въведете нов брой пътници втора класа: ";
+		cin >> travels[travelIndex].passangersSecondClass;
+		cout << "Броят пътници е променен успешно.\n";
+		break;
+	}
+	case 4: {
+		int newStartDay;
+		cout << "Въведете нова начална дата: ";
+		cin >> newStartDay;
+
+		if (newStartDay >= travels[travelIndex].endDay) {
+			cout << "Началната дата не може да бъде след или равна на крайната дата.\n";
+		}
+		else if (currentDay >= newStartDay) {
+			cout << "Началната дата не може да бъде преди или равна на текущата дата.\n";
+		}
+		else {
+			travels[travelIndex].startDay = newStartDay;
+			cout << "Началната дата е променена успешно.\n";
+		}
+		break;
+	}
+	case 5: {
+		int newEndDay;
+		cout << "Въведете нова крайна дата: ";
+		cin >> newEndDay;
+
+		if (newEndDay <= travels[travelIndex].startDay) {
+			cout << "Крайната дата не може да бъде преди или равна на началната дата.\n";
+		}
+		else {
+			travels[travelIndex].endDay = newEndDay;
+			cout << "Крайната дата е променена успешно.\n";
+		}
+		break;
+	}
+	case 6: {
+		cout << "Въведете нова цена за първа класа: ";
+		cin >> travels[travelIndex].firstClassPrice;
+		cout << "Цената е променена успешно.\n";
+		break;
+	}
+	case 7: {
+		cout << "Въведете нова цена за втора класа: ";
+		cin >> travels[travelIndex].secondClassPrice;
+		cout << "Цената е променена успешно.\n";
+		break;
+	}
+	case 0:
+		cout << "Промяната е отказана.\n";
+		break;
+	default:
+		cout << "Невалиден избор.\n";
+		break;
 	}
 }
 
