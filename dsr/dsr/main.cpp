@@ -16,6 +16,7 @@ struct Travel {
 	int passangersSecondClass;
 	int startDay;
 	int endDay;
+	string status;
 };
 
 const int MAX_TRAVELS = 100;
@@ -38,6 +39,19 @@ void menu() {
 }
 
 // must create functions to check if the captain/ship is already booked !!!
+bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
+	for (int i = 0; i < travelCount; i++) {
+		if (i == currentTravelIndex) continue;
+
+		bool datesOverlap = !(endDay < travels[i].startDay || startDay > travels[i].endDay);
+
+		if (datesOverlap && (travels[i].shipName == shipName || travels[i].captainName == captainName)) {
+			return false;
+		}
+	}
+	return true;
+}
+
 int addTravel() {
 	if (travelCount == MAX_TRAVELS) {
 		cout << "Максималният брой на пътувания е достигнат!\n";
@@ -96,7 +110,17 @@ int addTravel() {
 				cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
 					<< "Въведете валидни данни:\n";
 			}
-		} while (newTravel.startDay > newTravel.endDay);	
+		} while (newTravel.startDay > newTravel.endDay);
+
+		if (currentDay < newTravel.startDay) {
+			newTravel.status = "В очакване";
+		}
+		else if (currentDay > newTravel.endDay) {
+			newTravel.status = "Отминало";
+		}
+		else {
+			newTravel.status = "В процес на изпълнение";
+		}
 
 		travels[travelCount] = newTravel;
 		travelCount++;
@@ -181,6 +205,7 @@ void giveInfoToExternalFile() {
 void getInfroFromExternalFile() {
 	fstream fileInput("travels.txt", ios::in);
 
+	// think how to input all the data
 	/*  Пътуване 1:
 		Номер на пътуване : 634263
 		Дестинация : Варна
@@ -195,39 +220,23 @@ void getInfroFromExternalFile() {
 }
 
 void travelStatus() {
-	if (travelCount == 0) {
-		cout << "Няма въведени пътувания за проверка." << endl;
-		return;
-	}
+	void travelStatus() {
+		if (travelCount == 0) {
+			cout << "Няма въведени пътувания за проверка." << endl;
+			return;
+		}
 
-	cout << "\nСтатус на пътуванията за ден " << currentDay << ":\n\n";
-
-	for (int i = 0; i < travelCount; i++) {
-		cout << "Пътуване " << travels[i].number << " до " << travels[i].destination << ": ";
-
-		if (currentDay < travels[i].startDay) {
-			cout << "В очакване\n";
-
-			if (travels[i].startDay - currentDay <= 3) {
-				cout << "ВНИМАНИЕ: Остават " << travels[i].startDay - currentDay
-					<< " дни за промени в пътуването!\n";
+		for (int i = 0; i < travelCount; i++) {
+			if (currentDay < travels[i].startDay) {
+				travels[i].status = "В очакване";
+			}
+			else if (currentDay > travels[i].endDay) {
+				travels[i].status = "Отминало";
 			}
 			else {
-				cout << "Възможни са промени на капитан, брой пасажери, дати и цени.\n";
+				travels[i].status = "В процес на изпълнение";
 			}
 		}
-		else if (currentDay > travels[i].endDay) {
-			cout << "Отминало - не могат да се извършват промени\n";
-		}
-		else {
-			cout << "В процес на изпълнение - не могат да се извършват промени\n";
-		}
-
-		cout << "Кораб: " << travels[i].shipName << endl
-			<< "Капитан: " << travels[i].captainName << endl
-			<< "Дати: " << travels[i].startDay << "-" << travels[i].endDay << endl
-			<< "Пътници: " << travels[i].passangersFirstClass + travels[i].passangersSecondClass << endl;
-		cout << "----------------------------------------\n";
 	}
 }
 
