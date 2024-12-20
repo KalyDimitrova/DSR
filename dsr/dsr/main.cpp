@@ -318,16 +318,7 @@ void modifyTravel() {
 		<< "0. Отказ\n";
 
 	int choice;
-	cout << "Вашият избор: ";
 	cin >> choice;
-
-	string confirm;
-	cout << "Сигурни ли сте, че искате да направите промяната? (да/не): ";
-	cin >> confirm;
-	if (confirm != "да") {
-		cout << "Промяната е отказана.\n";
-		return;
-	}
 
 	switch (choice) {
 	case 1: {
