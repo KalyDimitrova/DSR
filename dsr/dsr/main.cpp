@@ -278,7 +278,6 @@ void modifyTravel() {
 	cout << "Въведете номер на пътуването за промяна: ";
 	cin >> travelNumber;
 
-	// Намиране на пътуването
 	int travelIndex = -1;
 	for (int i = 0; i < travelCount; i++) {
 		if (travels[i].number == travelNumber) {
@@ -287,13 +286,11 @@ void modifyTravel() {
 		}
 	}
 
-	// Проверка дали пътуването съществува
 	if (travelIndex == -1) {
 		cout << "Пътуване с този номер не е намерено.\n";
 		return;
 	}
 
-	// Проверка на статуса
 	if (travels[travelIndex].status != "В очакване") {
 		cout << "Пътуването не може да бъде променено - "
 			<< (travels[travelIndex].status == "Отминало" ? "вече е отминало" : "е в процес на изпълнение")
@@ -301,7 +298,6 @@ void modifyTravel() {
 		return;
 	}
 
-	// Проверка за 3-дневния срок
 	if (travels[travelIndex].startDay - currentDay <= 3) {
 		cout << "Пътуването не може да бъде променено - остават по-малко от 3 дни до началото.\n";
 		return;
@@ -415,6 +411,9 @@ int main() {
 		cin >> choice;
 		
 		switch (choice){
+			case 0:
+				cout << "Довиждане!" << endl;
+				break;
 			case 1:
 				addTravel();
 				break;
@@ -437,8 +436,14 @@ int main() {
 			case 7:
 				getInfroFromExternalFile();
 				break;
-			case 0:
-				cout << "Довиждане!" << endl;
+			case 8:
+				// showFinishedTravelsByDestination();
+				break;
+			case 9:
+				// showCaptainTravelsByPeriod();
+				break;
+			case 10:
+				modifyTravel();
 				break;
 			default:
 				cout << "Невалиден избор! Моля изберете отново: \n";
