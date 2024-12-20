@@ -253,7 +253,6 @@ void getInfroFromExternalFile() {
 		Ден на връщане : 25  */
 }
 
-
 void travelStatus() {
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания за проверка." << endl;
@@ -304,97 +303,173 @@ void modifyTravel() {
 	}
 
 	cout << "\nИзберете какво искате да промените:\n"
+		<< "0. Отказ\n"
 		<< "1. Капитан\n"
 		<< "2. Брой пътници първа класа\n"
 		<< "3. Брой пътници втора класа\n"
 		<< "4. Начална дата\n"
 		<< "5. Крайна дата\n"
 		<< "6. Цена първа класа\n"
-		<< "7. Цена втора класа\n"
-		<< "0. Отказ\n";
+		<< "7. Цена втора класа\n";
 
 	int choice;
 	cin >> choice;
 
-	switch (choice) {
-	case 1: {
-		string newCaptain;
-		cout << "Въведете нов капитан: ";
-		cin >> newCaptain;
-
-		if (isShipCaptainAvailable(travels[travelIndex].shipName, newCaptain,
-			travels[travelIndex].startDay, travels[travelIndex].endDay,
-			travelIndex)) {
-			travels[travelIndex].captainName = newCaptain;
-			cout << "Капитанът е променен успешно.\n";
-		}
-		else {
-			cout << "Капитанът е зает в този период.\n";
-		}
-		break;
-	}
-	case 2: {
-		cout << "Въведете нов брой пътници първа класа: ";
-		cin >> travels[travelIndex].passangersFirstClass;
-		cout << "Броят пътници е променен успешно.\n";
-		break;
-	}
-	case 3: {
-		cout << "Въведете нов брой пътници втора класа: ";
-		cin >> travels[travelIndex].passangersSecondClass;
-		cout << "Броят пътници е променен успешно.\n";
-		break;
-	}
-	case 4: {
-		int newStartDay;
-		cout << "Въведете нова начална дата: ";
-		cin >> newStartDay;
-
-		if (newStartDay >= travels[travelIndex].endDay) {
-			cout << "Началната дата не може да бъде след или равна на крайната дата.\n";
-		}
-		else if (currentDay >= newStartDay) {
-			cout << "Началната дата не може да бъде преди или равна на текущата дата.\n";
-		}
-		else {
-			travels[travelIndex].startDay = newStartDay;
-			cout << "Началната дата е променена успешно.\n";
-		}
-		break;
-	}
-	case 5: {
-		int newEndDay;
-		cout << "Въведете нова крайна дата: ";
-		cin >> newEndDay;
-
-		if (newEndDay <= travels[travelIndex].startDay) {
-			cout << "Крайната дата не може да бъде преди или равна на началната дата.\n";
-		}
-		else {
-			travels[travelIndex].endDay = newEndDay;
-			cout << "Крайната дата е променена успешно.\n";
-		}
-		break;
-	}
-	case 6: {
-		cout << "Въведете нова цена за първа класа: ";
-		cin >> travels[travelIndex].firstClassPrice;
-		cout << "Цената е променена успешно.\n";
-		break;
-	}
-	case 7: {
-		cout << "Въведете нова цена за втора класа: ";
-		cin >> travels[travelIndex].secondClassPrice;
-		cout << "Цената е променена успешно.\n";
-		break;
-	}
-	case 0:
+	string confirm;
+	cout << "Сигурни ли сте, че искате да направите тази промяна? (да/не): ";
+	cin >> confirm;
+	if (confirm != "да") {
 		cout << "Промяната е отказана.\n";
-		break;
-	default:
-		cout << "Невалиден избор.\n";
-		break;
+		return;
 	}
+
+	switch (choice) {
+		case 0:
+			cout << "Промяната е отказана.\n";
+			break;
+		case 1: {
+			string newCaptain;
+			cout << "Въведете нов капитан: ";
+			cin >> newCaptain;
+
+			cout << "Сигурни ли сте, че искате да смените капитана от '"
+				<< travels[travelIndex].captainName << "' на '" << newCaptain << "'? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			if (isShipCaptainAvailable(travels[travelIndex].shipName, newCaptain,
+				travels[travelIndex].startDay, travels[travelIndex].endDay,
+				travelIndex)) {
+				travels[travelIndex].captainName = newCaptain;
+				cout << "Капитанът е променен успешно.\n";
+			}
+			else {
+				cout << "Капитанът е зает в този период.\n";
+			}
+			break;
+		}
+		case 2: {
+			int newPassengers;
+			cout << "Въведете нов брой пътници първа класа: ";
+			cin >> newPassengers;
+
+			cout << "Сигурни ли сте, че искате да промените броя пътници от "
+				<< travels[travelIndex].passangersFirstClass << " на " << newPassengers << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			travels[travelIndex].passangersFirstClass = newPassengers;
+			cout << "Броят пътници е променен успешно.\n";
+			break;
+		}
+		case 3: {
+			int newPassengers;
+			cout << "Въведете нов брой пътници втора класа: ";
+			cin >> newPassengers;
+
+			cout << "Сигурни ли сте, че искате да промените броя пътници от "
+				<< travels[travelIndex].passangersSecondClass << " на " << newPassengers << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			travels[travelIndex].passangersSecondClass = newPassengers;
+			cout << "Броят пътници е променен успешно.\n";
+			break;
+		}
+		case 4: {
+			int newStartDay;
+			cout << "Въведете нова начална дата: ";
+			cin >> newStartDay;
+
+			cout << "Сигурни ли сте, че искате да промените началната дата от "
+				<< travels[travelIndex].startDay << " на " << newStartDay << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			if (newStartDay >= travels[travelIndex].endDay) {
+				cout << "Началната дата не може да бъде след или равна на крайната дата.\n";
+			}
+			else if (currentDay >= newStartDay) {
+				cout << "Началната дата не може да бъде преди или равна на текущата дата.\n";
+			}
+			else {
+				travels[travelIndex].startDay = newStartDay;
+				cout << "Началната дата е променена успешно.\n";
+			}
+			break;
+		}
+		case 5: {
+			int newEndDay;
+			cout << "Въведете нова крайна дата: ";
+			cin >> newEndDay;
+
+			cout << "Сигурни ли сте, че искате да промените крайната дата от "
+				<< travels[travelIndex].endDay << " на " << newEndDay << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			if (newEndDay <= travels[travelIndex].startDay) {
+				cout << "Крайната дата не може да бъде преди или равна на началната дата.\n";
+			}
+			else {
+				travels[travelIndex].endDay = newEndDay;
+				cout << "Крайната дата е променена успешно.\n";
+			}
+			break;
+		}
+		case 6: {
+			double newPrice;
+			cout << "Въведете нова цена за първа класа: ";
+			cin >> newPrice;
+
+			cout << "Сигурни ли сте, че искате да промените цената от "
+				<< travels[travelIndex].firstClassPrice << " на " << newPrice << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			travels[travelIndex].firstClassPrice = newPrice;
+			cout << "Цената е променена успешно.\n";
+			break;
+		}
+		case 7: {
+			double newPrice;
+			cout << "Въведете нова цена за втора класа: ";
+			cin >> newPrice;
+
+			cout << "Сигурни ли сте, че искате да промените цената от "
+				<< travels[travelIndex].secondClassPrice << " на " << newPrice << "? (да/не): ";
+			cin >> confirm;
+			if (confirm != "да") {
+				cout << "Промяната е отказана.\n";
+				break;
+			}
+
+			travels[travelIndex].secondClassPrice = newPrice;
+			cout << "Цената е променена успешно.\n";
+			break;
+		}
+		default:
+			cout << "Невалиден избор.\n";
+			break;
+		}
 }
 
 int main() {
