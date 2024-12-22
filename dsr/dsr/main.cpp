@@ -288,12 +288,14 @@ void travelStatus() {
 	}
 }
 
+// cahnges the array place from stack to heap
 void showFinishedTravelsByDestination() {
 	string searchDestination;
 	cout << "Въведете дестинация: ";
 	cin >> searchDestination;
 
-	Travel finishedTravels[MAX_TRAVELS];
+	// the array is stored in heap
+	Travel *finishedTravels = new Travel[MAX_TRAVELS];
 	int finishedTravelCount = 0;
 
 	for (int i = 0; i < travelCount; i++) {
@@ -305,6 +307,11 @@ void showFinishedTravelsByDestination() {
 
 	if (finishedTravelCount == 0) {
 		cout << "Няма завършили пътувания до " << searchDestination << endl;
+
+		// deleting array from heap
+		delete[] finishedTravels;
+		finishedTravels = nullptr;
+
 		return;
 	}
 
@@ -325,6 +332,9 @@ void showFinishedTravelsByDestination() {
 			<< " до ден " << finishedTravels[i].endDay
 			<< " с капитан " << finishedTravels[i].captainName << endl;
 	}
+
+	// deleting array from heap
+	delete[] finishedTravels;
 }
 
 void showCaptainTravelsByPeriod() {
