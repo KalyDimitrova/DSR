@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <cstring>
+#include <string>
 #include <iomanip>
 
 using namespace std;
@@ -53,7 +54,7 @@ bool isNumberUnique(int number, int travelCount, Travel travels[MAX_TRAVELS]) {
 	return true;
 }
 
-bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1, int travelCount, Travel travels[MAX_TRAVELS]) {
+bool isShipCaptainAvailable(int travelCount, Travel travels[MAX_TRAVELS], const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
 	for (int i = 0; i < travelCount; i++) {
 		if (i == currentTravelIndex) continue;
 
@@ -66,7 +67,7 @@ bool isShipCaptainAvailable(const string& shipName, const string& captainName, i
 	return true;
 }
 
-int addTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == MAX_TRAVELS) {
 		cout << "Максималният брой на пътувания е достигнат!\n";
 		return 0;
@@ -122,7 +123,7 @@ int addTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 				continue;
 			}
 
-			if (!isShipCaptainAvailable(newTravel.shipName, newTravel.captainName,
+			if (!isShipCaptainAvailable(travelCount, travels, newTravel.shipName, newTravel.captainName,
 				newTravel.startDay, newTravel.endDay)) {
 				cout << "Корабът или капитанът са заети в този период!\n"
 					<< "Въведете други данни.\n";
@@ -251,14 +252,67 @@ void sortTravelsByDestination(int travelCount, int currentDay, Travel travels[MA
 }
 
 //TODO: fill the functions for the files
-void giveInfoToExternalFile(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
-	// neshto
+void giveInfoToExternalFile(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+	ofstream fileOutput("travels.txt");
+
+	if (!fileOutput.is_open()) {
+		cout << "Error: Could not open file for writing!" << endl;
+		return;
+	}
+
+	fileOutput << travelCount << endl;
+
+	for (int i = 0; i < travelCount; i++) {
+		fileOutput << travels[i].number << endl
+			<< travels[i].destination << endl
+			<< travels[i].shipName << endl
+			<< travels[i].captainName << endl
+			<< travels[i].startDay << endl
+			<< travels[i].endDay << endl
+			<< travels[i].firstClassPrice << endl
+			<< travels[i].secondClassPrice << endl
+			<< travels[i].passangersFirstClass << endl
+			<< travels[i].passangersSecondClass << endl
+			<< travels[i].status << endl;
+	}
+
+	fileOutput.close();
 }
 
-void getInfroFromExternalFile(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
-	fstream fileInput("travels.txt", ios::in);
+void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+	ifstream fileInput("travels.txt");
 
-	
+	if (!fileInput.is_open()) {
+		cout << "Error: Could not open file for reading!" << endl;
+		return;
+	}
+
+	fileInput >> travelCount;
+	fileInput.ignore();
+
+	for (int i = 0; i < travelCount; i++) {
+		Travel newTravel;
+
+		fileInput >> newTravel.number;
+		fileInput.ignore();
+
+		getline(fileInput, newTravel.destination);
+		getline(fileInput, newTravel.shipName);
+		getline(fileInput, newTravel.captainName);
+
+		fileInput >> newTravel.startDay;
+		fileInput >> newTravel.endDay;
+		fileInput >> newTravel.firstClassPrice;
+		fileInput >> newTravel.secondClassPrice;
+		fileInput >> newTravel.passangersFirstClass;
+		fileInput >> newTravel.passangersSecondClass;
+		fileInput.ignore();
+		getline(fileInput, newTravel.status);
+
+		travels[i] = newTravel;
+	}
+
+	fileInput.close();
 }
 
 void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
@@ -449,9 +503,9 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 				break;
 			}
 
-			if (isShipCaptainAvailable(travels[travelIndex].shipName, newCaptain,
+			if (isShipCaptainAvailable(travelCount, travels, travels[travelIndex].shipName, newCaptain,
 				travels[travelIndex].startDay, travels[travelIndex].endDay,
-				travelIndex, travelCount, travels)) {
+				travelIndex)) {
 				travels[travelIndex].captainName = newCaptain;
 				cout << "Капитанът е променен успешно.\n";
 			}
@@ -582,15 +636,16 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 }
 
 int main() {
-	int travelCount;
+	int travelCount = 0;
 	int currentDay;
-	Travel travels[MAX_TRAVELS];
+	// stored array in heap instead of stack
+	Travel *travels = new Travel[MAX_TRAVELS];
 
 	cout << "Въведете текущ ден от месеца (1-31): ";
 	cin >> currentDay;
 
 	travelStatus(travelCount, currentDay, travels);
-	getInfroFromExternalFile(travelCount, currentDay, travels);
+	getInfoFromExternalFile(travelCount, currentDay, travels);
 
 	int choice;
 
@@ -623,11 +678,15 @@ int main() {
 				cout << "Данните са записани успешно!\n";
 				break;
 			case 7:
-				getInfroFromExternalFile(travelCount, currentDay, travels);
+				getInfoFromExternalFile(travelCount, currentDay, travels);
 				break;
 			case 8:
+				int choice2;
+
 				moreMenuOptions();
-				switch (choice) {
+
+				cin >> choice2;
+				switch (choice2) {
 					case 1:
 						showFinishedTravelsByDestination(travelCount, currentDay, travels);
 						break;
@@ -645,6 +704,7 @@ int main() {
 		}
 	} while (choice != 0);
 
-
+	// deleting array from heap
+	delete[] travels;
 	return 0;
 }
