@@ -20,9 +20,6 @@ struct Travel {
 };
 
 const int MAX_TRAVELS = 100;
-int travelCount = 0;
-int currentDay = 0;
-Travel travels[MAX_TRAVELS];
 
 void menu() {
 	setlocale(LC_ALL, "");
@@ -47,7 +44,7 @@ void moreMenuOptions() {
 		<< "Вашият избор: \n";
 }
 
-bool isNumberUnique(int number) {
+bool isNumberUnique(int number, int travelCount, Travel travels[MAX_TRAVELS]) {
 	for (int i = 0; i < travelCount; i++) {
 		if (travels[i].number == number) {
 			return false;
@@ -56,7 +53,7 @@ bool isNumberUnique(int number) {
 	return true;
 }
 
-bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
+bool isShipCaptainAvailable(const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1, int travelCount, Travel travels[MAX_TRAVELS]) {
 	for (int i = 0; i < travelCount; i++) {
 		if (i == currentTravelIndex) continue;
 
@@ -69,7 +66,7 @@ bool isShipCaptainAvailable(const string& shipName, const string& captainName, i
 	return true;
 }
 
-int addTravel() {
+int addTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == MAX_TRAVELS) {
 		cout << "Максималният брой на пътувания е достигнат!\n";
 		return 0;
@@ -97,10 +94,10 @@ int addTravel() {
 			cout << "Въведете номер на пътуването: ";
 			cin >> newTravel.number;
 
-			if (!isNumberUnique(newTravel.number)) {
+			if (!isNumberUnique(newTravel.number, travelCount, travels)) {
 				cout << "Този номер вече съществува. Моля въведете уникален номер.\n";
 			}
-		} while (!isNumberUnique(newTravel.number));
+		} while (!isNumberUnique(newTravel.number, travelCount, travels));
 
 		cout << "Въведете дестинация: ";
 		cin >> newTravel.destination;
@@ -164,7 +161,7 @@ int addTravel() {
 	return 0;
 }
 
-void printAllTravels() {
+void printAllTravels(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания.";
 		return;
@@ -191,7 +188,7 @@ void printAllTravels() {
 	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
 }
 
-void searchTravelSpecificPeriod(){
+void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]){
 	int minDay, maxDay;
 	cout << "Въведете начален ден: ";
 	cin >> minDay;
@@ -215,7 +212,7 @@ void searchTravelSpecificPeriod(){
 	}
 }
 
-void searchDestinationTravel() {
+void searchDestinationTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	char destinationInput[50];
 	cin.ignore();
 	
@@ -240,7 +237,7 @@ void searchDestinationTravel() {
 	}
 }
 
-void sortTravelsByDestination() {
+void sortTravelsByDestination(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	for (int i = 0; i < travelCount - 1; i++) {
 		for (int j = 0; j < travelCount - i - 1; j++) {
 			if (travels[j].destination > travels[j + 1].destination) {
@@ -254,28 +251,17 @@ void sortTravelsByDestination() {
 }
 
 //TODO: fill the functions for the files
-void giveInfoToExternalFile() {
+void giveInfoToExternalFile(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	// neshto
 }
 
-void getInfroFromExternalFile() {
+void getInfroFromExternalFile(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	fstream fileInput("travels.txt", ios::in);
 
-	// think how to input all the data
-	/*  Пътуване 1:
-		Номер на пътуване : 634263
-		Дестинация : Варна
-		Име на кораб : Черната Перла
-		Име на капитан : Джак Спароу
-		Цена за първа класа : 120
-		Цена за втора класа : 80
-		Брой пътници в първа класа : 20
-		Брой пътници във втора класа : 130
-		Ден на тръгване : 13
-		Ден на връщане : 25  */
+	
 }
 
-void travelStatus() {
+void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания за проверка." << endl;
 		return;
@@ -294,7 +280,7 @@ void travelStatus() {
 	}
 }
 
-void showFinishedTravelsByDestination() {
+void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	string searchDestination;
 	cout << "Въведете дестинация: ";
 	cin >> searchDestination;
@@ -340,7 +326,7 @@ void showFinishedTravelsByDestination() {
 	delete[] finishedTravels;
 }
 
-void showCaptainTravelsByPeriod() {
+void showCaptainTravelsByPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	string captainName;
 	int startDay, endDay;
 
@@ -395,7 +381,7 @@ void showCaptainTravelsByPeriod() {
 	delete[] captainTravels;
 }
 
-void modifyTravel() {
+void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	int travelNumber;
 	cout << "Въведете номер на пътуването за промяна: ";
 	cin >> travelNumber;
@@ -465,7 +451,7 @@ void modifyTravel() {
 
 			if (isShipCaptainAvailable(travels[travelIndex].shipName, newCaptain,
 				travels[travelIndex].startDay, travels[travelIndex].endDay,
-				travelIndex)) {
+				travelIndex, travelCount, travels)) {
 				travels[travelIndex].captainName = newCaptain;
 				cout << "Капитанът е променен успешно.\n";
 			}
@@ -596,11 +582,15 @@ void modifyTravel() {
 }
 
 int main() {
+	int travelCount;
+	int currentDay;
+	Travel travels[MAX_TRAVELS];
+
 	cout << "Въведете текущ ден от месеца (1-31): ";
 	cin >> currentDay;
 
-	travelStatus();
-	getInfroFromExternalFile();
+	travelStatus(travelCount, currentDay, travels);
+	getInfroFromExternalFile(travelCount, currentDay, travels);
 
 	int choice;
 
@@ -610,42 +600,42 @@ int main() {
 		
 		switch (choice){
 			case 0:
-				giveInfoToExternalFile();
+				giveInfoToExternalFile(travelCount, currentDay, travels);
 				cout << "Довиждане!" << endl;
 				break;
 			case 1:
-				addTravel();
+				addTravel(travelCount, currentDay, travels);
 				break;
 			case 2:
-				printAllTravels();
+				printAllTravels(travelCount, currentDay, travels);
 				break;
 			case 3:
-				searchTravelSpecificPeriod();
+				searchTravelSpecificPeriod(travelCount, currentDay, travels);
 				break;
 			case 4:
-				searchDestinationTravel();
+				searchDestinationTravel(travelCount, currentDay, travels);
 				break;
 			case 5:
-				sortTravelsByDestination();
+				sortTravelsByDestination(travelCount, currentDay, travels);
 				break;
 			case 6:
-				giveInfoToExternalFile();
+				giveInfoToExternalFile(travelCount, currentDay, travels);
 				cout << "Данните са записани успешно!\n";
 				break;
 			case 7:
-				getInfroFromExternalFile();
+				getInfroFromExternalFile(travelCount, currentDay, travels);
 				break;
 			case 8:
 				moreMenuOptions();
 				switch (choice) {
 					case 1:
-						showFinishedTravelsByDestination();
+						showFinishedTravelsByDestination(travelCount, currentDay, travels);
 						break;
 					case 2:
-						showCaptainTravelsByPeriod();
+						showCaptainTravelsByPeriod(travelCount, currentDay, travels);
 						break;
 					case 3:
-						modifyTravel();
+						modifyTravel(travelCount, currentDay, travels);
 						break;
 				}
 				break;
