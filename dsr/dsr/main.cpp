@@ -169,23 +169,21 @@ void printAllTravels(int travelCount, int currentDay, Travel travels[MAX_TRAVELS
 	}
 
 	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
-	cout << setw(8) << "Номер" << " | "
-		<< setw(12) << "Дестинация" << " | "
-		<< setw(12) << "Кораб" << " | "
-		<< setw(12) << "Капитан" << " | "
-		<< setw(10) << "Статус" << " | "
-		<< setw(12) << "Дати" << endl;
+
+	cout << "Номер | Дестинация | Кораб | Капитан | Статус | Дати" << endl;
+
 	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
 
 	for (int i = 0; i < travelCount; i++) {
-		cout << setw(8) << travels[i].number << " | "
-			<< setw(12) << travels[i].destination << " | "
-			<< setw(12) << travels[i].shipName << " | "
-			<< setw(12) << travels[i].captainName << " | "
-			<< setw(10) << travels[i].status << " | "
-			<< setw(2) << travels[i].startDay << "-"
-			<< setw(2) << travels[i].endDay << endl;
+		cout << setw(4) << right << travels[i].number << " | "
+			<< setw(10) << left << travels[i].destination << " | "
+			<< setw(9) << left << travels[i].shipName << " | "
+			<< setw(13) << left << travels[i].captainName << " | "
+			<< setw(23) << left << travels[i].status << " | "
+			<< setw(6) << right << travels[i].startDay << "-"
+			<< travels[i].endDay << endl;
 	}
+
 	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
 }
 
