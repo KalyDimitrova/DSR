@@ -25,7 +25,7 @@ const int MAX_TRAVELS = 100;
 void menu() {
 	setlocale(LC_ALL, "");
 
-	cout << "\t\t\tМЕНЮ:\n"
+	cout << "\t\tМЕНЮ:\n"
 		<< "0. Изход от програмата\n"
 		<< "1. Добавяне на пътуване\n"
 		<< "2. Извеждане на всички записани пътувания\n"
@@ -35,14 +35,14 @@ void menu() {
 		<< "6. Записване на данните във външен файл\n"
 		<< "7. Четене на данни от външен файл\n"
 		<< "8. Разширени опции\n"
-		<< "Вашият избор: \n";
+		<< "Вашият избор: ";
 }
 
 void moreMenuOptions() {
 	cout << "1. Завършили пътувания до дестинация\n"
 		<< "2. Пътувания на капитан за период\n"
 		<< "3. Промяна на пътуване\n"
-		<< "Вашият избор: \n";
+		<< "Вашият избор: ";
 }
 
 bool isNumberUnique(int number, int travelCount, Travel travels[MAX_TRAVELS]) {
@@ -147,13 +147,13 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 		cin >> newTravel.passangersSecondClass;
 
 		if (currentDay < newTravel.startDay) {
-			newTravel.status = "В очакване";
+			newTravel.status = "В очакване\n";
 		}
 		else if (currentDay > newTravel.endDay) {
-			newTravel.status = "Отминало";
+			newTravel.status = "Отминало\n";
 		}
 		else {
-			newTravel.status = "В процес на изпълнение";
+			newTravel.status = "В процес на изпълнение\n";
 		}
 
 		travels[travelCount] = newTravel;
@@ -164,7 +164,7 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 
 void printAllTravels(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == 0) {
-		cout << "Няма въведени пътувания.";
+		cout << "Няма въведени пътувания.\n";
 		return;
 	}
 
@@ -191,10 +191,17 @@ void printAllTravels(int travelCount, int currentDay, Travel travels[MAX_TRAVELS
 
 void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]){
 	int minDay, maxDay;
-	cout << "Въведете начален ден: ";
-	cin >> minDay;
-	cout << "Въведете краен ден: ";
-	cin >> maxDay;
+	do {
+		cout << "Въведете начален ден: ";
+		cin >> minDay;
+		cout << "Въведете краен ден: ";
+		cin >> maxDay;
+
+		if (minDay > maxDay) {
+			cout << "Денят на тръгване не може да бъде след деня на връщане!" << endl
+				<< "Въведете валидни данни.\n";
+		}
+	} while (minDay > maxDay);
 
 	bool isFound = false;
 	for (int i = 0; i < travelCount; i++) {
@@ -248,10 +255,9 @@ void sortTravelsByDestination(int travelCount, int currentDay, Travel travels[MA
 			}
 		}
 	}
-	cout << "Пътуванията са сортитани по дестинация!" << endl;
+	cout << "Пътуванията са сортитани по дестинация!\n" << endl;
 }
 
-//TODO: fill the functions for the files
 void giveInfoToExternalFile(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	ofstream fileOutput("travels.txt");
 
@@ -296,9 +302,9 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 		fileInput >> newTravel.number;
 		fileInput.ignore();
 
-		getline(fileInput, newTravel.destination);
-		getline(fileInput, newTravel.shipName);
-		getline(fileInput, newTravel.captainName);
+		::getline(fileInput, newTravel.destination);
+		::getline(fileInput, newTravel.shipName);
+		::getline(fileInput, newTravel.captainName);
 
 		fileInput >> newTravel.startDay;
 		fileInput >> newTravel.endDay;
@@ -307,7 +313,7 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 		fileInput >> newTravel.passangersFirstClass;
 		fileInput >> newTravel.passangersSecondClass;
 		fileInput.ignore();
-		getline(fileInput, newTravel.status);
+		::getline(fileInput, newTravel.status);
 
 		travels[i] = newTravel;
 	}
@@ -316,11 +322,6 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 }
 
 void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
-	if (travelCount == 0) {
-		cout << "Няма въведени пътувания за проверка." << endl;
-		return;
-	}
-
 	for (int i = 0; i < travelCount; i++) {
 		if (currentDay < travels[i].startDay) {
 			travels[i].status = "В очакване";
