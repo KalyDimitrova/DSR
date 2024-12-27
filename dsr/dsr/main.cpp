@@ -21,7 +21,7 @@ struct Travel {
 
 const int MAX_TRAVELS = 100;
 int travelCount = 0;
-int currentDay;
+int currentDay = 0;
 Travel travels[MAX_TRAVELS];
 
 void menu() {
@@ -36,9 +36,15 @@ void menu() {
 		<< "5. Сортиране на пътуванията по дестинация\n"
 		<< "6. Записване на данните във външен файл\n"
 		<< "7. Четене на данни от външен файл\n"
-		<< "8. Завършили пътувания до дестинация\n"
-		<< "9. Пътувания на капитан за период\n"
-		<< "10. Промяна на пътуване\n";
+		<< "8. Разширени опции\n"
+		<< "Вашият избор: \n";
+}
+
+void moreMenuOptions() {
+	cout << "1. Завършили пътувания до дестинация\n"
+		<< "2. Пътувания на капитан за период\n"
+		<< "3. Промяна на пътуване\n"
+		<< "Вашият избор: \n";
 }
 
 bool isNumberUnique(int number) {
@@ -288,7 +294,6 @@ void travelStatus() {
 	}
 }
 
-// cahnges the array place from stack to heap
 void showFinishedTravelsByDestination() {
 	string searchDestination;
 	cout << "Въведете дестинация: ";
@@ -310,8 +315,6 @@ void showFinishedTravelsByDestination() {
 
 		// deleting array from heap
 		delete[] finishedTravels;
-		finishedTravels = nullptr;
-
 		return;
 	}
 
@@ -348,7 +351,8 @@ void showCaptainTravelsByPeriod() {
 	cout << "Въведете краен ден: ";
 	cin >> endDay;
 
-	Travel captainTravels[MAX_TRAVELS];
+	//the array is stored in heap
+	Travel *captainTravels = new Travel[MAX_TRAVELS];
 	int captainTravelCount = 0;
 
 	for (int i = 0; i < travelCount; i++) {
@@ -362,6 +366,9 @@ void showCaptainTravelsByPeriod() {
 	if (captainTravelCount == 0) {
 		cout << "Няма намерени пътувания за капитан " << captainName
 			<< " в периода " << startDay << "-" << endDay << endl;
+
+		// deleting array from heap
+		delete[] captainTravels;
 		return;
 	}
 
@@ -383,6 +390,9 @@ void showCaptainTravelsByPeriod() {
 			<< " - от ден " << captainTravels[i].startDay
 			<< " до ден " << captainTravels[i].endDay << endl;
 	}
+
+	// deleting array from heap
+	delete[] captainTravels;
 }
 
 void modifyTravel() {
@@ -626,13 +636,18 @@ int main() {
 				getInfroFromExternalFile();
 				break;
 			case 8:
-				showFinishedTravelsByDestination();
-				break;
-			case 9:
-				showCaptainTravelsByPeriod();
-				break;
-			case 10:
-				modifyTravel();
+				moreMenuOptions();
+				switch (choice) {
+					case 1:
+						showFinishedTravelsByDestination();
+						break;
+					case 2:
+						showCaptainTravelsByPeriod();
+						break;
+					case 3:
+						modifyTravel();
+						break;
+				}
 				break;
 			default:
 				cout << "Невалиден избор! Моля изберете отново: \n";
