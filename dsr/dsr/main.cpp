@@ -643,8 +643,8 @@ int main() {
 	cout << "Въведете текущ ден от месеца (1-31): ";
 	cin >> currentDay;
 
-	travelStatus(travelCount, currentDay, travels);
 	getInfoFromExternalFile(travelCount, currentDay, travels);
+	travelStatus(travelCount, currentDay, travels);
 
 	int choice;
 
