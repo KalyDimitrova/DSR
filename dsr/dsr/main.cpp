@@ -6,6 +6,15 @@
 
 using namespace std;
 
+const int columnNumWidth = 6;
+const int columnDestWidth = 11;
+const int columnShipWidth = 12;
+const int columnCaptainWidth = 16;
+const int columnStatusWidth = 21;
+const int columnStartWidth = 7;
+const int columnEndWidth = 5;
+const int TABLE = columnNumWidth + columnDestWidth + columnShipWidth + columnCaptainWidth + columnStatusWidth + columnStartWidth + columnEndWidth + 19;
+
 struct Travel {
 	int number = 0;
 	string destination;
@@ -162,65 +171,38 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	return 0;
 }
 
-// calculating number of digits in an int
-int numDigits(int num) {
-	return floor(log10(num)) + 1;
-}
 
 void printAllTravels(int travelCount, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == 0) {
 		cout << "Няма въведени пътувания.\n";
 		return;
 	}
-	
-	int columnNumWidth = strlen("Номер");
-	int columnDestWidth = strlen("Дестинация");
-	int columnShipWidth = strlen("Кораб");
-	int columnCaptainWidth = strlen("Капитан");
-	int columnStatusWidth = strlen("Статус");
-	int columnStartWidth = strlen("Начало");
-	int columnEndWidth = strlen("Край");
 
-	for (int i = 0; i < travelCount; i++) {
-		columnNumWidth = max(columnNumWidth, numDigits(travels[i].number));
-		columnDestWidth = max(columnDestWidth, int(travels[i].destination.length()));
-		columnShipWidth = max(columnShipWidth, int(travels[i].shipName.length()));
-		columnCaptainWidth = max(columnCaptainWidth, int(travels[i].captainName.length()));
-		columnStatusWidth = max(columnStatusWidth, int(travels[i].status.length()));
-	}
+	cout << setfill('-') << setw(TABLE) << "-" << setfill(' ') << endl;
 
-	cout << columnNumWidth << " "
-		<< columnDestWidth << " "
-		<< columnShipWidth << " "
-		<< columnCaptainWidth << " "
-		<< columnStatusWidth << " "
-		<< columnStartWidth << " "
-		<< columnEndWidth << endl;
+	cout << setw(columnNumWidth + 5) << right << "Номер" << " | "
+		<< setw(columnDestWidth + 10) << left << "Дестинация" << " | "
+		<< setw(columnShipWidth + 5) << left << "Кораб" << " | "
+		<< setw(columnCaptainWidth + 7) << left << "Капитан" << " | "
+		<< setw(columnStatusWidth + 7) << left << "Статус" << " | "
+		<< setw(columnStartWidth + 5) << left << "Начало" << " | "
+		<< setw(columnEndWidth + 3) << left << "Край" << " |" << endl;
 
-	cout << setfill('-') << setw(100) << "-" << setfill('_') << endl;
-
-	cout << setw(10) << "Номер" << " | "
-		<< setw(columnDestWidth) << "Дестинация" << " | " 
-		<< setw(columnShipWidth) << "Кораб" << " | "
-		<< setw(columnCaptainWidth) << "Капитан" << " | "
-		<< setw(columnStatusWidth) << "Статус" << " | "
-		<< setw(columnStartWidth) << "Начало" << " | "
-		<< setw(columnEndWidth) << "Край" << endl;
-
-	cout << setfill('-') << setw(100) << "-" << setfill('_') << endl;
+	cout << setfill('-') << setw(TABLE) << "-" << setfill(' ') << endl;
 
 	for (int i = 0; i < travelCount; i++) {
 		cout << setw(columnNumWidth) << right << travels[i].number << " | "
-			<< setw(columnDestWidth) << left << travels[i].destination << " | "
-			<< setw(columnShipWidth) << left << travels[i].shipName << " | "
-			<< setw(columnCaptainWidth) << left << travels[i].captainName << " | "
-			<< setw(columnStatusWidth) << left << travels[i].status << " | "
-			<< setw(columnStartWidth) << right << travels[i].startDay << " | "
-			<< setw(columnEndWidth) << right << travels[i].endDay << endl;
+			<< setw(columnDestWidth + (travels[i].destination.length() / 2)) << left << travels[i].destination << " | "
+			<< setw(columnShipWidth + (travels[i].shipName.length() / 2)) << left << travels[i].shipName << " | "
+			<< setw(columnCaptainWidth + (travels[i].captainName.length() / 2)) << left << travels[i].captainName << " | "
+			<< setw(columnStatusWidth + (travels[i].status.length() / 2)) << left << travels[i].status << " | "
+			<< setw(columnStartWidth - 1) << right << travels[i].startDay << " | "
+			<< setw(columnEndWidth - 1) << left
+			<< travels[i].endDay << " |" << endl;
 
 	}
 
-	cout << setfill('-') << setw(100) << "-" << setfill(' ') << endl;
+	cout << setfill('-') << setw(TABLE) << "-" << setfill(' ') << endl;
 }
 
 void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]){
@@ -358,10 +340,10 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	for (int i = 0; i < travelCount; i++) {
 		if (currentDay < travels[i].startDay) {
-			travels[i].status = "В очакване";
+			travels[i].status = "В очакване ";
 		}
 		else if (currentDay > travels[i].endDay) {
-			travels[i].status = "Отминало";
+			travels[i].status = "Отминало  ";
 		}
 		else {
 			travels[i].status = "В процес на изпълнение";
