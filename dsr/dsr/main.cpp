@@ -15,6 +15,8 @@ const int columnStartWidth = 7;
 const int columnEndWidth = 5;
 const int TABLE = columnNumWidth + columnDestWidth + columnShipWidth + columnCaptainWidth + columnStatusWidth + columnStartWidth + columnEndWidth + 19;
 
+const int MAX_TRAVELS = 100;
+
 struct Travel {
 	int number = 0;
 	string destination;
@@ -28,8 +30,6 @@ struct Travel {
 	int passangersSecondClass = 0;
 	string status;
 };
-
-const int MAX_TRAVELS = 100;
 
 void menu() {
 	setlocale(LC_ALL, "");
@@ -170,7 +170,6 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	}
 	return 0;
 }
-
 
 void printAllTravels(int travelCount, Travel travels[MAX_TRAVELS]) {
 	if (travelCount == 0) {
