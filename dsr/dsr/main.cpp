@@ -111,19 +111,20 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 
 		cout << "Въведете дестинация: ";
 		cin >> newTravel.destination;
+		cin.ignore();
 
 		bool validTravelData = false;
 		do {
 			cout << "Въведете име на кораб: ";
-			cin >> newTravel.shipName;
+			getline(cin, newTravel.shipName);
 
 			cout << "Въведете име на капитан: ";
-			cin >> newTravel.captainName;
+			getline(cin, newTravel.captainName);
 
-			cout << "Въведете ден на тръгване: ";
+			cout << "Въведете ден на тръгване(1-31): ";
 			cin >> newTravel.startDay;
 
-			cout << "Въведете ден на връщане: ";
+			cout << "Въведете ден на връщане(1-31): ";
 			cin >> newTravel.endDay;
 
 			if (newTravel.startDay > newTravel.endDay) {
@@ -465,6 +466,7 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 		cout << "Пътуването не може да бъде променено - остават по-малко от 3 дни до началото.\n";
 		return;
 	}
+	int choice;
 
 	cout << "\nИзберете какво искате да промените:\n"
 		<< "0. Отказ\n"
@@ -474,9 +476,9 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 		<< "4. Начална дата\n"
 		<< "5. Крайна дата\n"
 		<< "6. Цена първа класа\n"
-		<< "7. Цена втора класа\n";
+		<< "7. Цена втора класа\n"
+		<< "Избор: ";
 
-	int choice;
 	cin >> choice;
 
 	string confirm;
@@ -492,9 +494,10 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 			cout << "Промяната е отказана.\n";
 			break;
 		case 1: {
+			cin.ignore();
 			string newCaptain;
 			cout << "Въведете нов капитан: ";
-			cin >> newCaptain;
+			getline(cin, newCaptain);
 
 			cout << "Сигурни ли сте, че искате да смените капитана от '"
 				<< travels[travelIndex].captainName << "' на '" << newCaptain << "'? (да/не): ";
@@ -690,7 +693,6 @@ int main() {
 				break;
 			case 6:
 				giveInfoToExternalFile(travelCount, currentDay, travels);
-				cout << "Данните са записани успешно!\n";
 				break;
 			case 7:
 				getInfoFromExternalFile(travelCount, currentDay, travels);
