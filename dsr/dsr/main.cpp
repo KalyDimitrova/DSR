@@ -275,7 +275,7 @@ void giveInfoToExternalFile(int& travelCount, int currentDay, Travel travels[MAX
 	ofstream fileOutput("travels.txt");
 
 	if (!fileOutput.is_open()) {
-		cout << "Грешка при отваряне на файла!" << endl;
+		cout << "Грешка при отваряне на файла!\n" << endl;
 		return;
 	}
 
@@ -296,19 +296,18 @@ void giveInfoToExternalFile(int& travelCount, int currentDay, Travel travels[MAX
 	}
 
 	fileOutput.close();
-	cout << "Данните са записани успешно!";
+	cout << "Данните са записани успешно!\n";
 }
 
 void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	ifstream fileInput("travels.txt");
 
 	if (!fileInput.is_open()) {
-		cout << "Грешка при отваряне на файла!" << endl;
+		cout << "Грешка при отваряне на файла!\n" << endl;
 		return;
 	}
 
 	fileInput >> travelCount;
-	fileInput.ignore();
 
 	for (int i = 0; i < travelCount; i++) {
 		Travel newTravel;
@@ -333,7 +332,7 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 	}
 
 	fileInput.close();
-	cout << "Данните са прочетени успешно!";
+	cout << "Данните са прочетени успешно!\n";
 }
 
 void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
