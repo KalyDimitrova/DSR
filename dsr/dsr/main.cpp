@@ -337,9 +337,10 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 }
 
 void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+	cin.ignore();
 	string searchDestination;
 	cout << "Въведете дестинация: ";
-	cin >> searchDestination;
+	getline(cin, searchDestination);
 
 	// the array is stored in heap
 	Travel *finishedTravels = new Travel[MAX_TRAVELS];
@@ -347,7 +348,7 @@ void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel tr
 
 	for (int i = 0; i < travelCount; i++) {
 		if (travels[i].destination == searchDestination &&
-			travels[i].status == "Отминало") {
+			travels[i].status == "Отминало  ") {
 			finishedTravels[finishedTravelCount++] = travels[i];
 		}
 	}
@@ -370,7 +371,7 @@ void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel tr
 		}
 	}
 
-	cout << "\nЗавършили пътувания до " << searchDestination << ":\n";
+	cout << "Завършили пътувания до " << searchDestination << ":\n";
 	for (int i = 0; i < finishedTravelCount; i++) {
 		cout << "Пътуване " << finishedTravels[i].number
 			<< " - от ден " << finishedTravels[i].startDay
@@ -383,11 +384,12 @@ void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel tr
 }
 
 void showCaptainTravelsByPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+	cin.ignore();
 	string captainName;
 	int startDay, endDay;
 
 	cout << "Въведете име на капитан: ";
-	cin >> captainName;
+	getline(cin, captainName);
 	cout << "Въведете начален ден: ";
 	cin >> startDay;
 	cout << "Въведете краен ден: ";
@@ -424,7 +426,7 @@ void showCaptainTravelsByPeriod(int travelCount, int currentDay, Travel travels[
 		}
 	}
 
-	cout << "\nПътувания на капитан " << captainName
+	cout << "Пътувания на капитан " << captainName
 		<< " в периода " << startDay << "-" << endDay << ":\n";
 	for (int i = 0; i < captainTravelCount; i++) {
 		cout << "Пътуване " << captainTravels[i].number
@@ -468,7 +470,7 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 	}
 	int choice;
 
-	cout << "\nИзберете какво искате да промените:\n"
+	cout << "Изберете какво искате да промените:\n"
 		<< "0. Отказ\n"
 		<< "1. Капитан\n"
 		<< "2. Брой пътници първа класа\n"
