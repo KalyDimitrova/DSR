@@ -82,20 +82,20 @@ int addTravel(int& travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 		return 0;
 	}
 
-	int n;
+	int travelsToAdd;
 	do {
 		cout << "Въведете брой на пътувания, които искате да добавите: ";
-		cin >> n;
+		cin >> travelsToAdd;
 
-		if (travelCount + n > MAX_TRAVELS) {
+		if (travelCount + travelsToAdd > MAX_TRAVELS) {
 			cout << "Максималният брой на пътувания е достигнат!\n"
 				<< "Въведете валиден брой пътувания!\n";
 		}
 
-	} while (travelCount + n > MAX_TRAVELS);
+	} while (travelCount + travelsToAdd > MAX_TRAVELS);
 
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < travelsToAdd; i++) {
 		Travel newTravel = {};
 
 		cout << "Пътуване: " << i + 1 << endl;
