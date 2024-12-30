@@ -246,8 +246,7 @@ void searchDestinationTravel(int travelCount, int currentDay, Travel travels[MAX
 		if (travels[i].destination == destinationInput) {
 			isFound = true;
 
-			cout << "Намерени пътувания:\n"
-				<< "Пътуване " << travels[i].number
+				cout << "Пътуване " << travels[i].number
 				<< " до " << travels[i].destination
 				<< " на " << travels[i].startDay << " ден." << endl;
 		}
