@@ -335,20 +335,6 @@ void getInfoFromExternalFile(int& travelCount, int currentDay, Travel travels[MA
 	cout << "Данните са прочетени успешно!\n";
 }
 
-void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
-	for (int i = 0; i < travelCount; i++) {
-		if (currentDay < travels[i].startDay) {
-			travels[i].status = "В очакване ";
-		}
-		else if (currentDay > travels[i].endDay) {
-			travels[i].status = "Отминало  ";
-		}
-		else {
-			travels[i].status = "В процес на изпълнение";
-		}
-	}
-}
-
 void showFinishedTravelsByDestination(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	string searchDestination;
 	cout << "Въведете дестинация: ";
@@ -468,9 +454,9 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 		return;
 	}
 
-	if (travels[travelIndex].status != "В очакване") {
+	if (travels[travelIndex].status != "В очакване ") {
 		cout << "Пътуването не може да бъде променено - "
-			<< (travels[travelIndex].status == "Отминало" ? "вече е отминало" : "е в процес на изпълнение")
+			<< (travels[travelIndex].status == "Отминало  " ? "вече е отминало" : "е в процес на изпълнение")
 			<< endl;
 		return;
 	}
@@ -648,6 +634,20 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 			cout << "Невалиден избор.\n";
 			break;
 		}
+}
+
+void travelStatus(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
+	for (int i = 0; i < travelCount; i++) {
+		if (currentDay < travels[i].startDay) {
+			travels[i].status = "В очакване ";
+		}
+		else if (currentDay > travels[i].endDay) {
+			travels[i].status = "Отминало  ";
+		}
+		else {
+			travels[i].status = "В процес на изпълнение";
+		}
+	}
 }
 
 int main() {
