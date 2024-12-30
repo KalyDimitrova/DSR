@@ -223,8 +223,7 @@ void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[
 		if (travels[i].startDay >= minDay && travels[i].endDay <= maxDay) {
 			isFound = true;
 
-			cout << "Намерени пътувания:\n"
-				<< "Пътуване " << travels[i].number 
+				cout << "Пътуване " << travels[i].number 
 				<< " до " << travels[i].destination
 				<< " на " << travels[i].startDay << " ден." << endl;
 		}
