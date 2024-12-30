@@ -204,7 +204,7 @@ void printAllTravels(int travelCount, Travel travels[MAX_TRAVELS]) {
 	cout << setfill('-') << setw(TABLE) << "-" << setfill(' ') << endl;
 }
 
-void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]){
+void searchTravelSpecificPeriod(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) {
 	int minDay, maxDay;
 	do {
 		cout << "Въведете начален ден: ";
