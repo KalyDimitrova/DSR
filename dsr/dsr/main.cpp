@@ -63,10 +63,8 @@ bool isNumberUnique(int number, int travelCount, Travel travels[MAX_TRAVELS]) {
 	return true;
 }
 
-bool isShipCaptainAvailable(int travelCount, Travel travels[MAX_TRAVELS], const string& shipName, const string& captainName, int startDay, int endDay, int currentTravelIndex = -1) {
+bool isShipCaptainAvailable(int travelCount, Travel travels[MAX_TRAVELS], const string& shipName, const string& captainName, int startDay, int endDay) {
 	for (int i = 0; i < travelCount; i++) {
-		if (i == currentTravelIndex) continue;
-
 		bool datesOverlap = !(endDay < travels[i].startDay || startDay > travels[i].endDay);
 
 		if (datesOverlap && (travels[i].shipName == shipName || travels[i].captainName == captainName)) {
@@ -510,8 +508,7 @@ void modifyTravel(int travelCount, int currentDay, Travel travels[MAX_TRAVELS]) 
 			}
 
 			if (isShipCaptainAvailable(travelCount, travels, travels[travelIndex].shipName, newCaptain,
-				travels[travelIndex].startDay, travels[travelIndex].endDay,
-				travelIndex)) {
+				travels[travelIndex].startDay, travels[travelIndex].endDay)) {
 				travels[travelIndex].captainName = newCaptain;
 				cout << "Капитанът е променен успешно.\n";
 			}
